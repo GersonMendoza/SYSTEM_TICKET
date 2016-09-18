@@ -6,6 +6,7 @@
 package com.sv.udb.controlador;
 
 import com.sv.udb.modelo.Departamentos;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
