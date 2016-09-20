@@ -23,7 +23,7 @@ import org.primefaces.context.RequestContext;
  */
 @Named(value = "departamentosBean")
 @ViewScoped
-public class DepartamentosBean {
+public class DepartamentosBean implements Serializable {
     private Departamentos objeDepa;
     private List<Departamentos> listDepa;
     private boolean guardar;
