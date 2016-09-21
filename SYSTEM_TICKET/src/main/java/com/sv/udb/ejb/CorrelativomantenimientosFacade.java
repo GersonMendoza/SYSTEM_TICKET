@@ -5,17 +5,17 @@
  */
 package com.sv.udb.ejb;
 
-import com.sv.udb.modelo.CorrelativoMantenimientos;
+import com.sv.udb.modelo.Correlativomantenimientos;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author oscar
+ * @author root
  */
 @Stateless
-public class CorrelativoMantenimientosFacade extends AbstractFacade<CorrelativoMantenimientos> implements CorrelativoMantenimientosFacadeLocal {
+public class CorrelativomantenimientosFacade extends AbstractFacade<Correlativomantenimientos> implements CorrelativomantenimientosFacadeLocal {
 
     @PersistenceContext(unitName = "PILETPU")
     private EntityManager em;
@@ -25,8 +25,8 @@ public class CorrelativoMantenimientosFacade extends AbstractFacade<CorrelativoM
         return em;
     }
 
-    public CorrelativoMantenimientosFacade() {
-        super(CorrelativoMantenimientos.class);
+    public CorrelativomantenimientosFacade() {
+        super(Correlativomantenimientos.class);
     }
     
 }

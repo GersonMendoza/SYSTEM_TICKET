@@ -16,22 +16,30 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class SolicitudesPK implements Serializable {
+public class ProcesosolicitudesPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "codi_soli")
-    private int codiSoli;
+    @Column(name = "codi_proc_soli")
+    private int codiProcSoli;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "codi_depa")
-    private int codiDepa;
+    @Column(name = "codi_soli")
+    private int codiSoli;
 
-    public SolicitudesPK() {
+    public ProcesosolicitudesPK() {
     }
 
-    public SolicitudesPK(int codiSoli, int codiDepa) {
+    public ProcesosolicitudesPK(int codiProcSoli, int codiSoli) {
+        this.codiProcSoli = codiProcSoli;
         this.codiSoli = codiSoli;
-        this.codiDepa = codiDepa;
+    }
+
+    public int getCodiProcSoli() {
+        return codiProcSoli;
+    }
+
+    public void setCodiProcSoli(int codiProcSoli) {
+        this.codiProcSoli = codiProcSoli;
     }
 
     public int getCodiSoli() {
@@ -42,33 +50,25 @@ public class SolicitudesPK implements Serializable {
         this.codiSoli = codiSoli;
     }
 
-    public int getCodiDepa() {
-        return codiDepa;
-    }
-
-    public void setCodiDepa(int codiDepa) {
-        this.codiDepa = codiDepa;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
+        hash += (int) codiProcSoli;
         hash += (int) codiSoli;
-        hash += (int) codiDepa;
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof SolicitudesPK)) {
+        if (!(object instanceof ProcesosolicitudesPK)) {
             return false;
         }
-        SolicitudesPK other = (SolicitudesPK) object;
+        ProcesosolicitudesPK other = (ProcesosolicitudesPK) object;
+        if (this.codiProcSoli != other.codiProcSoli) {
+            return false;
+        }
         if (this.codiSoli != other.codiSoli) {
-            return false;
-        }
-        if (this.codiDepa != other.codiDepa) {
             return false;
         }
         return true;
@@ -76,7 +76,7 @@ public class SolicitudesPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.sv.udb.modelo.SolicitudesPK[ codiSoli=" + codiSoli + ", codiDepa=" + codiDepa + " ]";
+        return "com.sv.udb.modelo.ProcesosolicitudesPK[ codiProcSoli=" + codiProcSoli + ", codiSoli=" + codiSoli + " ]";
     }
     
 }

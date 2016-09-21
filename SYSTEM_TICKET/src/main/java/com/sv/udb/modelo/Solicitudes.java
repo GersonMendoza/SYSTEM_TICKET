@@ -13,7 +13,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -31,10 +30,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author gersonfrancisco
+ * @author root
  */
 @Entity
-@Table(name = "solicitudes", catalog = "system_ticket", schema = "")
+@Table(name = "Solicitudes", catalog = "system_ticket", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Solicitudes.findAll", query = "SELECT s FROM Solicitudes s"),
@@ -49,6 +48,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Solicitudes.findByPrioSoli", query = "SELECT s FROM Solicitudes s WHERE s.prioSoli = :prioSoli"),
     @NamedQuery(name = "Solicitudes.findByEstaSoli", query = "SELECT s FROM Solicitudes s WHERE s.estaSoli = :estaSoli")})
 public class Solicitudes implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected SolicitudesPK solicitudesPK;
@@ -84,13 +84,13 @@ public class Solicitudes implements Serializable {
     @NotNull
     @Column(name = "esta_soli")
     private int estaSoli;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "solicitudes", fetch = FetchType.LAZY)
-    private ResolucionSolicitudes resolucionSolicitudes;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "solicitudes", fetch = FetchType.LAZY)
-    private List<ProcesoSolicitudes> procesoSolicitudesList;
     @JoinColumn(name = "codi_depa", referencedColumnName = "codi_depa", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Departamentos departamentos;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "solicitudes")
+    private Resolucionsolicitudes resolucionsolicitudes;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "solicitudes")
+    private List<Procesosolicitudes> procesosolicitudesList;
 
     public Solicitudes() {
     }
@@ -192,29 +192,29 @@ public class Solicitudes implements Serializable {
         this.estaSoli = estaSoli;
     }
 
-    public ResolucionSolicitudes getResolucionSolicitudes() {
-        return resolucionSolicitudes;
-    }
-
-    public void setResolucionSolicitudes(ResolucionSolicitudes resolucionSolicitudes) {
-        this.resolucionSolicitudes = resolucionSolicitudes;
-    }
-
-    @XmlTransient
-    public List<ProcesoSolicitudes> getProcesoSolicitudesList() {
-        return procesoSolicitudesList;
-    }
-
-    public void setProcesoSolicitudesList(List<ProcesoSolicitudes> procesoSolicitudesList) {
-        this.procesoSolicitudesList = procesoSolicitudesList;
-    }
-
     public Departamentos getDepartamentos() {
         return departamentos;
     }
 
     public void setDepartamentos(Departamentos departamentos) {
         this.departamentos = departamentos;
+    }
+
+    public Resolucionsolicitudes getResolucionsolicitudes() {
+        return resolucionsolicitudes;
+    }
+
+    public void setResolucionsolicitudes(Resolucionsolicitudes resolucionsolicitudes) {
+        this.resolucionsolicitudes = resolucionsolicitudes;
+    }
+
+    @XmlTransient
+    public List<Procesosolicitudes> getProcesosolicitudesList() {
+        return procesosolicitudesList;
+    }
+
+    public void setProcesosolicitudesList(List<Procesosolicitudes> procesosolicitudesList) {
+        this.procesosolicitudesList = procesosolicitudesList;
     }
 
     @Override

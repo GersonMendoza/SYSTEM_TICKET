@@ -13,10 +13,11 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author gersonfrancisco
+ * @author root
  */
 @Embeddable
 public class MantenimientosPK implements Serializable {
+
     @Basic(optional = false)
     @Column(name = "codi_mant")
     private int codiMant;

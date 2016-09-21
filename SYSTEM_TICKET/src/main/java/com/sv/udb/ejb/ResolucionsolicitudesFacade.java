@@ -5,17 +5,17 @@
  */
 package com.sv.udb.ejb;
 
-import com.sv.udb.modelo.ResolucionSolicitudes;
+import com.sv.udb.modelo.Resolucionsolicitudes;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author oscar
+ * @author root
  */
 @Stateless
-public class ResolucionSolicitudesFacade extends AbstractFacade<ResolucionSolicitudes> implements ResolucionSolicitudesFacadeLocal {
+public class ResolucionsolicitudesFacade extends AbstractFacade<Resolucionsolicitudes> implements ResolucionsolicitudesFacadeLocal {
 
     @PersistenceContext(unitName = "PILETPU")
     private EntityManager em;
@@ -25,8 +25,8 @@ public class ResolucionSolicitudesFacade extends AbstractFacade<ResolucionSolici
         return em;
     }
 
-    public ResolucionSolicitudesFacade() {
-        super(ResolucionSolicitudes.class);
+    public ResolucionsolicitudesFacade() {
+        super(Resolucionsolicitudes.class);
     }
     
 }

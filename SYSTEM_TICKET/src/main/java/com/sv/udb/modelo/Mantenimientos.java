@@ -12,7 +12,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -25,10 +24,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author gersonfrancisco
+ * @author root
  */
 @Entity
-@Table(name = "mantenimientos", catalog = "system_ticket", schema = "")
+@Table(name = "Mantenimientos", catalog = "system_ticket", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Mantenimientos.findAll", query = "SELECT m FROM Mantenimientos m"),
@@ -39,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Mantenimientos.findByCodiTipoMant", query = "SELECT m FROM Mantenimientos m WHERE m.mantenimientosPK.codiTipoMant = :codiTipoMant"),
     @NamedQuery(name = "Mantenimientos.findByEstaMantPrev", query = "SELECT m FROM Mantenimientos m WHERE m.estaMantPrev = :estaMantPrev")})
 public class Mantenimientos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected MantenimientosPK mantenimientosPK;
@@ -54,14 +54,14 @@ public class Mantenimientos implements Serializable {
     @NotNull
     @Column(name = "esta_mant_prev")
     private boolean estaMantPrev;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mantenimientos", fetch = FetchType.LAZY)
-    private List<CorrelativoMantenimientos> correlativoMantenimientosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mantenimientos")
+    private List<Correlativomantenimientos> correlativomantenimientosList;
     @JoinColumn(name = "codi_depa", referencedColumnName = "codi_depa", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Departamentos departamentos;
     @JoinColumn(name = "codi_tipo_mant", referencedColumnName = "codi_tipo_mant", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private TipoMantenimientos tipoMantenimientos;
+    @ManyToOne(optional = false)
+    private Tipomantenimientos tipomantenimientos;
 
     public Mantenimientos() {
     }
@@ -114,12 +114,12 @@ public class Mantenimientos implements Serializable {
     }
 
     @XmlTransient
-    public List<CorrelativoMantenimientos> getCorrelativoMantenimientosList() {
-        return correlativoMantenimientosList;
+    public List<Correlativomantenimientos> getCorrelativomantenimientosList() {
+        return correlativomantenimientosList;
     }
 
-    public void setCorrelativoMantenimientosList(List<CorrelativoMantenimientos> correlativoMantenimientosList) {
-        this.correlativoMantenimientosList = correlativoMantenimientosList;
+    public void setCorrelativomantenimientosList(List<Correlativomantenimientos> correlativomantenimientosList) {
+        this.correlativomantenimientosList = correlativomantenimientosList;
     }
 
     public Departamentos getDepartamentos() {
@@ -130,12 +130,12 @@ public class Mantenimientos implements Serializable {
         this.departamentos = departamentos;
     }
 
-    public TipoMantenimientos getTipoMantenimientos() {
-        return tipoMantenimientos;
+    public Tipomantenimientos getTipomantenimientos() {
+        return tipomantenimientos;
     }
 
-    public void setTipoMantenimientos(TipoMantenimientos tipoMantenimientos) {
-        this.tipoMantenimientos = tipoMantenimientos;
+    public void setTipomantenimientos(Tipomantenimientos tipomantenimientos) {
+        this.tipomantenimientos = tipomantenimientos;
     }
 
     @Override

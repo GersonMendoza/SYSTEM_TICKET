@@ -5,17 +5,17 @@
  */
 package com.sv.udb.ejb;
 
-import com.sv.udb.modelo.ProcesoMantenimientos;
+import com.sv.udb.modelo.Tipomantenimientos;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author oscar
+ * @author root
  */
 @Stateless
-public class ProcesoMantenimientosFacade extends AbstractFacade<ProcesoMantenimientos> implements ProcesoMantenimientosFacadeLocal {
+public class TipomantenimientosFacade extends AbstractFacade<Tipomantenimientos> implements TipomantenimientosFacadeLocal {
 
     @PersistenceContext(unitName = "PILETPU")
     private EntityManager em;
@@ -25,8 +25,8 @@ public class ProcesoMantenimientosFacade extends AbstractFacade<ProcesoMantenimi
         return em;
     }
 
-    public ProcesoMantenimientosFacade() {
-        super(ProcesoMantenimientos.class);
+    public TipomantenimientosFacade() {
+        super(Tipomantenimientos.class);
     }
     
 }

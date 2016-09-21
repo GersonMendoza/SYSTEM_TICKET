@@ -12,7 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,10 +28,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author gersonfrancisco
+ * @author root
  */
 @Entity
-@Table(name = "departamentos", catalog = "system_ticket", schema = "")
+@Table(name = "Departamentos", catalog = "system_ticket", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Departamentos.findAll", query = "SELECT d FROM Departamentos d"),
@@ -42,6 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Departamentos.findByFechBajaDepa", query = "SELECT d FROM Departamentos d WHERE d.fechBajaDepa = :fechBajaDepa"),
     @NamedQuery(name = "Departamentos.findByEstaDepa", query = "SELECT d FROM Departamentos d WHERE d.estaDepa = :estaDepa")})
 public class Departamentos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,10 +65,10 @@ public class Departamentos implements Serializable {
     @NotNull
     @Column(name = "esta_depa")
     private boolean estaDepa;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamentos", fetch = FetchType.LAZY)
-    private List<Mantenimientos> mantenimientosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamentos", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamentos")
     private List<Solicitudes> solicitudesList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamentos")
+    private List<Mantenimientos> mantenimientosList;
 
     public Departamentos() {
     }
@@ -125,21 +125,21 @@ public class Departamentos implements Serializable {
     }
 
     @XmlTransient
-    public List<Mantenimientos> getMantenimientosList() {
-        return mantenimientosList;
-    }
-
-    public void setMantenimientosList(List<Mantenimientos> mantenimientosList) {
-        this.mantenimientosList = mantenimientosList;
-    }
-
-    @XmlTransient
     public List<Solicitudes> getSolicitudesList() {
         return solicitudesList;
     }
 
     public void setSolicitudesList(List<Solicitudes> solicitudesList) {
         this.solicitudesList = solicitudesList;
+    }
+
+    @XmlTransient
+    public List<Mantenimientos> getMantenimientosList() {
+        return mantenimientosList;
+    }
+
+    public void setMantenimientosList(List<Mantenimientos> mantenimientosList) {
+        this.mantenimientosList = mantenimientosList;
     }
 
     @Override
