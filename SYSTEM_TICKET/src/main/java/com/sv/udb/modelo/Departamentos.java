@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author oscar
+ * @author gersonfrancisco
  */
 @Entity
 @Table(name = "departamentos", catalog = "system_ticket", schema = "")
@@ -65,9 +65,9 @@ public class Departamentos implements Serializable {
     @NotNull
     @Column(name = "esta_depa")
     private boolean estaDepa;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiDepa", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiDepa", fetch = FetchType.LAZY)
     private List<Mantenimientos> mantenimientosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiDepa", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiDepa", fetch = FetchType.LAZY)
     private List<Solicitudes> solicitudesList;
 
     public Departamentos() {
