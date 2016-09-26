@@ -6,8 +6,8 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -66,9 +66,9 @@ public class Departamentos implements Serializable {
     @Column(name = "esta_depa")
     private boolean estaDepa;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiDepa", fetch = FetchType.EAGER)
-    private Collection<Mantenimientos> mantenimientosCollection;
+    private List<Mantenimientos> mantenimientosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiDepa", fetch = FetchType.EAGER)
-    private Collection<Solicitudes> solicitudesCollection;
+    private List<Solicitudes> solicitudesList;
 
     public Departamentos() {
     }
@@ -125,21 +125,21 @@ public class Departamentos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Mantenimientos> getMantenimientosCollection() {
-        return mantenimientosCollection;
+    public List<Mantenimientos> getMantenimientosList() {
+        return mantenimientosList;
     }
 
-    public void setMantenimientosCollection(Collection<Mantenimientos> mantenimientosCollection) {
-        this.mantenimientosCollection = mantenimientosCollection;
+    public void setMantenimientosList(List<Mantenimientos> mantenimientosList) {
+        this.mantenimientosList = mantenimientosList;
     }
 
     @XmlTransient
-    public Collection<Solicitudes> getSolicitudesCollection() {
-        return solicitudesCollection;
+    public List<Solicitudes> getSolicitudesList() {
+        return solicitudesList;
     }
 
-    public void setSolicitudesCollection(Collection<Solicitudes> solicitudesCollection) {
-        this.solicitudesCollection = solicitudesCollection;
+    public void setSolicitudesList(List<Solicitudes> solicitudesList) {
+        this.solicitudesList = solicitudesList;
     }
 
     @Override

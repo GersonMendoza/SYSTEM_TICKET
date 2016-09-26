@@ -6,8 +6,8 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -88,9 +88,9 @@ public class Solicitudes implements Serializable {
     @Column(name = "esta_soli")
     private int estaSoli;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSoli", fetch = FetchType.EAGER)
-    private Collection<ResolucionSolicitudes> resolucionSolicitudesCollection;
+    private List<ResolucionSolicitudes> resolucionSolicitudesList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSoli", fetch = FetchType.EAGER)
-    private Collection<ProcesoSolicitudes> procesoSolicitudesCollection;
+    private List<ProcesoSolicitudes> procesoSolicitudesList;
     @JoinColumn(name = "codi_depa", referencedColumnName = "codi_depa")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Departamentos codiDepa;
@@ -192,21 +192,21 @@ public class Solicitudes implements Serializable {
     }
 
     @XmlTransient
-    public Collection<ResolucionSolicitudes> getResolucionSolicitudesCollection() {
-        return resolucionSolicitudesCollection;
+    public List<ResolucionSolicitudes> getResolucionSolicitudesList() {
+        return resolucionSolicitudesList;
     }
 
-    public void setResolucionSolicitudesCollection(Collection<ResolucionSolicitudes> resolucionSolicitudesCollection) {
-        this.resolucionSolicitudesCollection = resolucionSolicitudesCollection;
+    public void setResolucionSolicitudesList(List<ResolucionSolicitudes> resolucionSolicitudesList) {
+        this.resolucionSolicitudesList = resolucionSolicitudesList;
     }
 
     @XmlTransient
-    public Collection<ProcesoSolicitudes> getProcesoSolicitudesCollection() {
-        return procesoSolicitudesCollection;
+    public List<ProcesoSolicitudes> getProcesoSolicitudesList() {
+        return procesoSolicitudesList;
     }
 
-    public void setProcesoSolicitudesCollection(Collection<ProcesoSolicitudes> procesoSolicitudesCollection) {
-        this.procesoSolicitudesCollection = procesoSolicitudesCollection;
+    public void setProcesoSolicitudesList(List<ProcesoSolicitudes> procesoSolicitudesList) {
+        this.procesoSolicitudesList = procesoSolicitudesList;
     }
 
     public Departamentos getCodiDepa() {

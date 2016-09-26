@@ -6,7 +6,7 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -58,7 +58,7 @@ public class Mantenimientos implements Serializable {
     @Column(name = "esta_mant_prev")
     private boolean estaMantPrev;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiMant", fetch = FetchType.EAGER)
-    private Collection<CorrelativoMantenimientos> correlativoMantenimientosCollection;
+    private List<CorrelativoMantenimientos> correlativoMantenimientosList;
     @JoinColumn(name = "codi_depa", referencedColumnName = "codi_depa")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Departamentos codiDepa;
@@ -113,12 +113,12 @@ public class Mantenimientos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<CorrelativoMantenimientos> getCorrelativoMantenimientosCollection() {
-        return correlativoMantenimientosCollection;
+    public List<CorrelativoMantenimientos> getCorrelativoMantenimientosList() {
+        return correlativoMantenimientosList;
     }
 
-    public void setCorrelativoMantenimientosCollection(Collection<CorrelativoMantenimientos> correlativoMantenimientosCollection) {
-        this.correlativoMantenimientosCollection = correlativoMantenimientosCollection;
+    public void setCorrelativoMantenimientosList(List<CorrelativoMantenimientos> correlativoMantenimientosList) {
+        this.correlativoMantenimientosList = correlativoMantenimientosList;
     }
 
     public Departamentos getCodiDepa() {
