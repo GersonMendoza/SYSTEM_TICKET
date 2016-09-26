@@ -6,12 +6,15 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -24,24 +27,24 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author root
+ * @author oscar
  */
 @Entity
-@Table(name = "Mantenimientos", catalog = "system_ticket", schema = "")
+@Table(name = "mantenimientos", catalog = "system_ticket", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Mantenimientos.findAll", query = "SELECT m FROM Mantenimientos m"),
-    @NamedQuery(name = "Mantenimientos.findByCodiMant", query = "SELECT m FROM Mantenimientos m WHERE m.mantenimientosPK.codiMant = :codiMant"),
+    @NamedQuery(name = "Mantenimientos.findByCodiMant", query = "SELECT m FROM Mantenimientos m WHERE m.codiMant = :codiMant"),
     @NamedQuery(name = "Mantenimientos.findByContDiasMant", query = "SELECT m FROM Mantenimientos m WHERE m.contDiasMant = :contDiasMant"),
-    @NamedQuery(name = "Mantenimientos.findByCodiDepa", query = "SELECT m FROM Mantenimientos m WHERE m.mantenimientosPK.codiDepa = :codiDepa"),
     @NamedQuery(name = "Mantenimientos.findByCodiUbi", query = "SELECT m FROM Mantenimientos m WHERE m.codiUbi = :codiUbi"),
-    @NamedQuery(name = "Mantenimientos.findByCodiTipoMant", query = "SELECT m FROM Mantenimientos m WHERE m.mantenimientosPK.codiTipoMant = :codiTipoMant"),
     @NamedQuery(name = "Mantenimientos.findByEstaMantPrev", query = "SELECT m FROM Mantenimientos m WHERE m.estaMantPrev = :estaMantPrev")})
 public class Mantenimientos implements Serializable {
-
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected MantenimientosPK mantenimientosPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "codi_mant")
+    private Integer codiMant;
     @Basic(optional = false)
     @NotNull
     @Column(name = "cont_dias_mant")
@@ -54,39 +57,35 @@ public class Mantenimientos implements Serializable {
     @NotNull
     @Column(name = "esta_mant_prev")
     private boolean estaMantPrev;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mantenimientos")
-    private List<Correlativomantenimientos> correlativomantenimientosList;
-    @JoinColumn(name = "codi_depa", referencedColumnName = "codi_depa", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Departamentos departamentos;
-    @JoinColumn(name = "codi_tipo_mant", referencedColumnName = "codi_tipo_mant", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Tipomantenimientos tipomantenimientos;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiMant", fetch = FetchType.EAGER)
+    private Collection<CorrelativoMantenimientos> correlativoMantenimientosCollection;
+    @JoinColumn(name = "codi_depa", referencedColumnName = "codi_depa")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Departamentos codiDepa;
+    @JoinColumn(name = "codi_tipo_mant", referencedColumnName = "codi_tipo_mant")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private TipoMantenimientos codiTipoMant;
 
     public Mantenimientos() {
     }
 
-    public Mantenimientos(MantenimientosPK mantenimientosPK) {
-        this.mantenimientosPK = mantenimientosPK;
+    public Mantenimientos(Integer codiMant) {
+        this.codiMant = codiMant;
     }
 
-    public Mantenimientos(MantenimientosPK mantenimientosPK, int contDiasMant, int codiUbi, boolean estaMantPrev) {
-        this.mantenimientosPK = mantenimientosPK;
+    public Mantenimientos(Integer codiMant, int contDiasMant, int codiUbi, boolean estaMantPrev) {
+        this.codiMant = codiMant;
         this.contDiasMant = contDiasMant;
         this.codiUbi = codiUbi;
         this.estaMantPrev = estaMantPrev;
     }
 
-    public Mantenimientos(int codiMant, int codiDepa, int codiTipoMant) {
-        this.mantenimientosPK = new MantenimientosPK(codiMant, codiDepa, codiTipoMant);
+    public Integer getCodiMant() {
+        return codiMant;
     }
 
-    public MantenimientosPK getMantenimientosPK() {
-        return mantenimientosPK;
-    }
-
-    public void setMantenimientosPK(MantenimientosPK mantenimientosPK) {
-        this.mantenimientosPK = mantenimientosPK;
+    public void setCodiMant(Integer codiMant) {
+        this.codiMant = codiMant;
     }
 
     public int getContDiasMant() {
@@ -114,34 +113,34 @@ public class Mantenimientos implements Serializable {
     }
 
     @XmlTransient
-    public List<Correlativomantenimientos> getCorrelativomantenimientosList() {
-        return correlativomantenimientosList;
+    public Collection<CorrelativoMantenimientos> getCorrelativoMantenimientosCollection() {
+        return correlativoMantenimientosCollection;
     }
 
-    public void setCorrelativomantenimientosList(List<Correlativomantenimientos> correlativomantenimientosList) {
-        this.correlativomantenimientosList = correlativomantenimientosList;
+    public void setCorrelativoMantenimientosCollection(Collection<CorrelativoMantenimientos> correlativoMantenimientosCollection) {
+        this.correlativoMantenimientosCollection = correlativoMantenimientosCollection;
     }
 
-    public Departamentos getDepartamentos() {
-        return departamentos;
+    public Departamentos getCodiDepa() {
+        return codiDepa;
     }
 
-    public void setDepartamentos(Departamentos departamentos) {
-        this.departamentos = departamentos;
+    public void setCodiDepa(Departamentos codiDepa) {
+        this.codiDepa = codiDepa;
     }
 
-    public Tipomantenimientos getTipomantenimientos() {
-        return tipomantenimientos;
+    public TipoMantenimientos getCodiTipoMant() {
+        return codiTipoMant;
     }
 
-    public void setTipomantenimientos(Tipomantenimientos tipomantenimientos) {
-        this.tipomantenimientos = tipomantenimientos;
+    public void setCodiTipoMant(TipoMantenimientos codiTipoMant) {
+        this.codiTipoMant = codiTipoMant;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (mantenimientosPK != null ? mantenimientosPK.hashCode() : 0);
+        hash += (codiMant != null ? codiMant.hashCode() : 0);
         return hash;
     }
 
@@ -152,7 +151,7 @@ public class Mantenimientos implements Serializable {
             return false;
         }
         Mantenimientos other = (Mantenimientos) object;
-        if ((this.mantenimientosPK == null && other.mantenimientosPK != null) || (this.mantenimientosPK != null && !this.mantenimientosPK.equals(other.mantenimientosPK))) {
+        if ((this.codiMant == null && other.codiMant != null) || (this.codiMant != null && !this.codiMant.equals(other.codiMant))) {
             return false;
         }
         return true;
@@ -160,7 +159,7 @@ public class Mantenimientos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.sv.udb.modelo.Mantenimientos[ mantenimientosPK=" + mantenimientosPK + " ]";
+        return "com.sv.udb.modelo.Mantenimientos[ codiMant=" + codiMant + " ]";
     }
     
 }

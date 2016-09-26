@@ -6,20 +6,22 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,28 +32,29 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author root
+ * @author oscar
  */
 @Entity
-@Table(name = "Solicitudes", catalog = "system_ticket", schema = "")
+@Table(name = "solicitudes", catalog = "system_ticket", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Solicitudes.findAll", query = "SELECT s FROM Solicitudes s"),
-    @NamedQuery(name = "Solicitudes.findByCodiSoli", query = "SELECT s FROM Solicitudes s WHERE s.solicitudesPK.codiSoli = :codiSoli"),
+    @NamedQuery(name = "Solicitudes.findByCodiSoli", query = "SELECT s FROM Solicitudes s WHERE s.codiSoli = :codiSoli"),
     @NamedQuery(name = "Solicitudes.findByCodiUsua", query = "SELECT s FROM Solicitudes s WHERE s.codiUsua = :codiUsua"),
     @NamedQuery(name = "Solicitudes.findByCodiEnca", query = "SELECT s FROM Solicitudes s WHERE s.codiEnca = :codiEnca"),
     @NamedQuery(name = "Solicitudes.findByCodiEqui", query = "SELECT s FROM Solicitudes s WHERE s.codiEqui = :codiEqui"),
     @NamedQuery(name = "Solicitudes.findByCodiUbic", query = "SELECT s FROM Solicitudes s WHERE s.codiUbic = :codiUbic"),
-    @NamedQuery(name = "Solicitudes.findByCodiDepa", query = "SELECT s FROM Solicitudes s WHERE s.solicitudesPK.codiDepa = :codiDepa"),
     @NamedQuery(name = "Solicitudes.findByFechHoraSoli", query = "SELECT s FROM Solicitudes s WHERE s.fechHoraSoli = :fechHoraSoli"),
     @NamedQuery(name = "Solicitudes.findByTiemResoSoli", query = "SELECT s FROM Solicitudes s WHERE s.tiemResoSoli = :tiemResoSoli"),
     @NamedQuery(name = "Solicitudes.findByPrioSoli", query = "SELECT s FROM Solicitudes s WHERE s.prioSoli = :prioSoli"),
     @NamedQuery(name = "Solicitudes.findByEstaSoli", query = "SELECT s FROM Solicitudes s WHERE s.estaSoli = :estaSoli")})
 public class Solicitudes implements Serializable {
-
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected SolicitudesPK solicitudesPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "codi_soli")
+    private Integer codiSoli;
     @Basic(optional = false)
     @NotNull
     @Lob
@@ -84,23 +87,23 @@ public class Solicitudes implements Serializable {
     @NotNull
     @Column(name = "esta_soli")
     private int estaSoli;
-    @JoinColumn(name = "codi_depa", referencedColumnName = "codi_depa", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Departamentos departamentos;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "solicitudes")
-    private Resolucionsolicitudes resolucionsolicitudes;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "solicitudes")
-    private List<Procesosolicitudes> procesosolicitudesList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSoli", fetch = FetchType.EAGER)
+    private Collection<ResolucionSolicitudes> resolucionSolicitudesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiSoli", fetch = FetchType.EAGER)
+    private Collection<ProcesoSolicitudes> procesoSolicitudesCollection;
+    @JoinColumn(name = "codi_depa", referencedColumnName = "codi_depa")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Departamentos codiDepa;
 
     public Solicitudes() {
     }
 
-    public Solicitudes(SolicitudesPK solicitudesPK) {
-        this.solicitudesPK = solicitudesPK;
+    public Solicitudes(Integer codiSoli) {
+        this.codiSoli = codiSoli;
     }
 
-    public Solicitudes(SolicitudesPK solicitudesPK, String descSoli, int codiUsua, int codiUbic, Date fechHoraSoli, int estaSoli) {
-        this.solicitudesPK = solicitudesPK;
+    public Solicitudes(Integer codiSoli, String descSoli, int codiUsua, int codiUbic, Date fechHoraSoli, int estaSoli) {
+        this.codiSoli = codiSoli;
         this.descSoli = descSoli;
         this.codiUsua = codiUsua;
         this.codiUbic = codiUbic;
@@ -108,16 +111,12 @@ public class Solicitudes implements Serializable {
         this.estaSoli = estaSoli;
     }
 
-    public Solicitudes(int codiSoli, int codiDepa) {
-        this.solicitudesPK = new SolicitudesPK(codiSoli, codiDepa);
+    public Integer getCodiSoli() {
+        return codiSoli;
     }
 
-    public SolicitudesPK getSolicitudesPK() {
-        return solicitudesPK;
-    }
-
-    public void setSolicitudesPK(SolicitudesPK solicitudesPK) {
-        this.solicitudesPK = solicitudesPK;
+    public void setCodiSoli(Integer codiSoli) {
+        this.codiSoli = codiSoli;
     }
 
     public String getDescSoli() {
@@ -192,35 +191,36 @@ public class Solicitudes implements Serializable {
         this.estaSoli = estaSoli;
     }
 
-    public Departamentos getDepartamentos() {
-        return departamentos;
+    @XmlTransient
+    public Collection<ResolucionSolicitudes> getResolucionSolicitudesCollection() {
+        return resolucionSolicitudesCollection;
     }
 
-    public void setDepartamentos(Departamentos departamentos) {
-        this.departamentos = departamentos;
-    }
-
-    public Resolucionsolicitudes getResolucionsolicitudes() {
-        return resolucionsolicitudes;
-    }
-
-    public void setResolucionsolicitudes(Resolucionsolicitudes resolucionsolicitudes) {
-        this.resolucionsolicitudes = resolucionsolicitudes;
+    public void setResolucionSolicitudesCollection(Collection<ResolucionSolicitudes> resolucionSolicitudesCollection) {
+        this.resolucionSolicitudesCollection = resolucionSolicitudesCollection;
     }
 
     @XmlTransient
-    public List<Procesosolicitudes> getProcesosolicitudesList() {
-        return procesosolicitudesList;
+    public Collection<ProcesoSolicitudes> getProcesoSolicitudesCollection() {
+        return procesoSolicitudesCollection;
     }
 
-    public void setProcesosolicitudesList(List<Procesosolicitudes> procesosolicitudesList) {
-        this.procesosolicitudesList = procesosolicitudesList;
+    public void setProcesoSolicitudesCollection(Collection<ProcesoSolicitudes> procesoSolicitudesCollection) {
+        this.procesoSolicitudesCollection = procesoSolicitudesCollection;
+    }
+
+    public Departamentos getCodiDepa() {
+        return codiDepa;
+    }
+
+    public void setCodiDepa(Departamentos codiDepa) {
+        this.codiDepa = codiDepa;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (solicitudesPK != null ? solicitudesPK.hashCode() : 0);
+        hash += (codiSoli != null ? codiSoli.hashCode() : 0);
         return hash;
     }
 
@@ -231,7 +231,7 @@ public class Solicitudes implements Serializable {
             return false;
         }
         Solicitudes other = (Solicitudes) object;
-        if ((this.solicitudesPK == null && other.solicitudesPK != null) || (this.solicitudesPK != null && !this.solicitudesPK.equals(other.solicitudesPK))) {
+        if ((this.codiSoli == null && other.codiSoli != null) || (this.codiSoli != null && !this.codiSoli.equals(other.codiSoli))) {
             return false;
         }
         return true;
@@ -239,7 +239,7 @@ public class Solicitudes implements Serializable {
 
     @Override
     public String toString() {
-        return "com.sv.udb.modelo.Solicitudes[ solicitudesPK=" + solicitudesPK + " ]";
+        return "com.sv.udb.modelo.Solicitudes[ codiSoli=" + codiSoli + " ]";
     }
     
 }
